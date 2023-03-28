@@ -20,6 +20,12 @@
     component: './Welcome',
   },
   {
+    path: '/articleDetail',
+    name: 'ArticleDetail',
+    icon: 'smile',
+    component: './ArticleDetail',
+  },
+  {
     path: '/admin',
     name: 'admin',
     icon: 'crown',
