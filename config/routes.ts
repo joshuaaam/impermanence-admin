@@ -49,6 +49,13 @@
     component: './TableList',
   },
   {
+    path: '/sysManage',
+    name: 'sysManage',
+    icon: 'crown',
+    access: 'canAdmin',
+    component: './SysManage',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

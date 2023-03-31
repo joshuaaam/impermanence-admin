@@ -109,14 +109,9 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.RuleListItem>[] = [
     {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.updateForm.ruleName.nameLabel"
-          defaultMessage="Rule name"
-        />
-      ),
+      title: <FormattedMessage id="pages.articleList.title" defaultMessage="Rule name" />,
       dataIndex: 'name',
-      tip: 'The rule name is the unique key',
+      tip: '标题名称',
       render: (dom, entity) => {
         return (
           <a
@@ -131,35 +126,35 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleDesc" defaultMessage="Description" />,
+      title: <FormattedMessage id="pages.articleList.tags" defaultMessage="Description" />,
       dataIndex: 'desc',
       valueType: 'textarea',
     },
+    // {
+    //   title: (
+    //     <FormattedMessage
+    //       id="pages.searchTable.titleCallNo"
+    //       defaultMessage="Number of service calls"
+    //     />
+    //   ),
+    //   dataIndex: 'callNo',
+    //   sorter: true,
+    //   hideInForm: true,
+    //   renderText: (val: string) =>
+    //     `${val}${intl.formatMessage({
+    //       id: 'pages.searchTable.tenThousand',
+    //       defaultMessage: ' 万 ',
+    //     })}`,
+    // },
     {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.titleCallNo"
-          defaultMessage="Number of service calls"
-        />
-      ),
-      dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      renderText: (val: string) =>
-        `${val}${intl.formatMessage({
-          id: 'pages.searchTable.tenThousand',
-          defaultMessage: ' 万 ',
-        })}`,
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="Status" />,
+      title: <FormattedMessage id="pages.articleList.articleStatus" defaultMessage="Status" />,
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
         0: {
           text: (
             <FormattedMessage
-              id="pages.searchTable.nameStatus.default"
+              id="pages.articleList.articleStatus.draft"
               defaultMessage="Shut down"
             />
           ),
@@ -167,13 +162,16 @@ const TableList: React.FC = () => {
         },
         1: {
           text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="Running" />
+            <FormattedMessage
+              id="pages.articleList.articleStatus.onLine"
+              defaultMessage="Running"
+            />
           ),
           status: 'Processing',
         },
         2: {
           text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="Online" />
+            <FormattedMessage id="pages.articleList.articleStatus.onLine" defaultMessage="Online" />
           ),
           status: 'Success',
         },
@@ -190,10 +188,33 @@ const TableList: React.FC = () => {
     },
     {
       title: (
-        <FormattedMessage
-          id="pages.searchTable.titleUpdatedAt"
-          defaultMessage="Last scheduled time"
-        />
+        <FormattedMessage id="pages.articleList.createTime" defaultMessage="Last scheduled time" />
+      ),
+      sorter: true,
+      dataIndex: 'updatedAt',
+      valueType: 'dateTime',
+      renderFormItem: (item, { defaultRender, ...rest }, form) => {
+        const status = form.getFieldValue('status');
+        if (`${status}` === '0') {
+          return false;
+        }
+        if (`${status}` === '3') {
+          return (
+            <Input
+              {...rest}
+              placeholder={intl.formatMessage({
+                id: 'pages.searchTable.exception',
+                defaultMessage: 'Please enter the reason for the exception!',
+              })}
+            />
+          );
+        }
+        return defaultRender(item);
+      },
+    },
+    {
+      title: (
+        <FormattedMessage id="pages.articleList.updateTime" defaultMessage="Last scheduled time" />
       ),
       sorter: true,
       dataIndex: 'updatedAt',
@@ -229,14 +250,14 @@ const TableList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="Configuration" />
+          <FormattedMessage id="pages.articleList.edit" defaultMessage="Configuration" />
         </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          <FormattedMessage
-            id="pages.searchTable.subscribeAlert"
-            defaultMessage="Subscribe to alerts"
-          />
-        </a>,
+        // <a key="subscribeAlert" href="https://procomponents.ant.design/">
+        //   <FormattedMessage
+        //     id="pages.searchTable.subscribeAlert"
+        //     defaultMessage="Subscribe to alerts"
+        //   />
+        // </a>,
       ],
     },
   ];
@@ -245,7 +266,7 @@ const TableList: React.FC = () => {
     <PageContainer>
       <ProTable<API.RuleListItem, API.PageParams>
         headerTitle={intl.formatMessage({
-          id: 'pages.searchTable.title',
+          id: 'pages.articleList.pageTitle',
           defaultMessage: 'Enquiry form',
         })}
         actionRef={actionRef}
