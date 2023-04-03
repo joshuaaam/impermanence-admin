@@ -1,4 +1,4 @@
-import { addRule, removeRule, rule, updateRule } from '@/services/ant-design-pro/api';
+import { addRule, article, removeRule, rule, updateRule } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
@@ -107,10 +107,10 @@ const TableList: React.FC = () => {
    * */
   const intl = useIntl();
 
-  const columns: ProColumns<API.RuleListItem>[] = [
+  const columns: ProColumns<API.ArticleItem>[] = [
     {
       title: <FormattedMessage id="pages.articleList.title" defaultMessage="Rule name" />,
-      dataIndex: 'name',
+      dataIndex: 'title',
       tip: '标题名称',
       render: (dom, entity) => {
         return (
@@ -127,7 +127,7 @@ const TableList: React.FC = () => {
     },
     {
       title: <FormattedMessage id="pages.articleList.tags" defaultMessage="Description" />,
-      dataIndex: 'desc',
+      dataIndex: 'tags',
       valueType: 'textarea',
     },
     // {
@@ -191,7 +191,7 @@ const TableList: React.FC = () => {
         <FormattedMessage id="pages.articleList.createTime" defaultMessage="Last scheduled time" />
       ),
       sorter: true,
-      dataIndex: 'updatedAt',
+      dataIndex: 'create_time',
       valueType: 'dateTime',
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
         const status = form.getFieldValue('status');
@@ -217,7 +217,7 @@ const TableList: React.FC = () => {
         <FormattedMessage id="pages.articleList.updateTime" defaultMessage="Last scheduled time" />
       ),
       sorter: true,
-      dataIndex: 'updatedAt',
+      dataIndex: 'update_time',
       valueType: 'dateTime',
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
         const status = form.getFieldValue('status');
@@ -264,13 +264,13 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable<API.ArticleItem, API.PageParams>
         headerTitle={intl.formatMessage({
           id: 'pages.articleList.pageTitle',
           defaultMessage: 'Enquiry form',
         })}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 120,
         }}
@@ -285,7 +285,7 @@ const TableList: React.FC = () => {
             <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
-        request={rule}
+        request={article}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {

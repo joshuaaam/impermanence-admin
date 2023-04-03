@@ -40,6 +40,35 @@ export async function getNotices(options?: { [key: string]: any }) {
   });
 }
 
+/** 获取文章列表 GET /api/article/list */
+export async function article(
+  params: {
+    // query
+    /** 当前的页码 */
+    page?: number;
+    // /** 页面的容量 */
+    pageSize?: number;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.ArticleList>('/api/article/list', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+/** 新增文章 POST /api/article/add */
+export async function addArticle(options?: { [key: string]: any }) {
+  console.log(options, 'options');
+  return request<API.Response>('/api/article/add', {
+    method: 'POST',
+    ...(options || {}),
+  });
+}
+
 /** 获取规则列表 GET /api/rule */
 export async function rule(
   params: {

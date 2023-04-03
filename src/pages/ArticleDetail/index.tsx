@@ -1,3 +1,4 @@
+import { addArticle } from '@/services/ant-design-pro/api';
 import {
   PageContainer,
   ProForm,
@@ -11,6 +12,7 @@ import Card from 'antd/lib/card/Card';
 import MdEditor from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
 import { useState } from 'react';
+import { history } from 'umi';
 
 export default () => {
   const [text, setText] = useState('# Hello Editor');
@@ -18,8 +20,13 @@ export default () => {
     <PageContainer>
       <Card>
         <ProForm
-          onFinish={async () => {
-            message.success('提交成功');
+          onFinish={async (e) => {
+            const body = Object.assign(e, { tags: e.tags.join(',') });
+            // 提交接口
+            const res = await addArticle({ data: body });
+            if (res.code === 200) {
+              history.push('/list');
+            }
           }}
           syncToUrl={(values, type) => {
             if (type === 'get') {
@@ -53,7 +60,7 @@ export default () => {
           />
 
           <ProFormSelect
-            name="tag"
+            name="tags"
             label="标签"
             valueEnum={{
               red: 'Red',

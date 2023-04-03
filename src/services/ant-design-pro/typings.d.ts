@@ -30,7 +30,7 @@ declare namespace API {
   };
 
   type PageParams = {
-    current?: number;
+    page?: number;
     pageSize?: number;
   };
 
@@ -52,6 +52,28 @@ declare namespace API {
   type RuleList = {
     data?: RuleListItem[];
     /** 列表的内容总数 */
+    total?: number;
+    success?: boolean;
+  };
+
+  type ArticleItem = {
+    id: number;
+    title: string;
+    content: string;
+    tags: string;
+    status: number;
+    create_time: string;
+    update_time: string;
+  };
+
+  type Response = {
+    code: number;
+    msg: string;
+    data?: object;
+  };
+
+  type ArticleList = {
+    data?: ArticleItem[];
     total?: number;
     success?: boolean;
   };
