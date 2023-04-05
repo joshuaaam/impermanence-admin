@@ -1,4 +1,5 @@
 export default {
+  'menu.signUp': '注册',
   'menu.welcome': '欢迎',
   'menu.ArticleDetail': '发布文章',
   'menu.sysManage': '系统管理',
@@ -25,7 +26,8 @@ export default {
   'menu.form.advanced-form': '高级表单',
   'menu.list': '文章列表',
   'menu.list-draft': '草稿箱',
-  'menu.list.table-list': '查询表格',
+  'menu.list.table-list': '文章管理',
+  'menu.list.comment-list': '评论管理',
   'menu.list.basic-list': '标准列表',
   'menu.list.card-list': '卡片列表',
   'menu.list.search-list': '搜索列表',

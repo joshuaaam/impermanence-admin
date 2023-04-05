@@ -21,6 +21,7 @@ export default {
   'pages.login.forgotPassword': '忘记密码 ?',
   'pages.login.submit': '登录',
   'pages.login.loginWith': '其他登录方式 :',
+  'pages.login.signUp': '注册 :',
   'pages.login.registerAccount': '注册账户',
   'pages.welcome.link': '欢迎使用',
   'pages.welcome.alertMessage': '更快更强的重型组件，已经发布。',
@@ -72,4 +73,7 @@ export default {
   'pages.articleList.articleStatus': '文章状态',
   'pages.articleList.articleStatus.onLine': '已发布',
   'pages.articleList.articleStatus.draft': '草稿',
+  'pages.commentList.content': '内容',
+  'pages.commentList.aid': '所属文章',
+  'pages.commentList.id': 'ID',
 };

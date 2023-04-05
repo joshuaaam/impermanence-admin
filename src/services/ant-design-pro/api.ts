@@ -69,6 +69,35 @@ export async function addArticle(options?: { [key: string]: any }) {
   });
 }
 
+/** 删除文章 POST /api/article/delete */
+export async function deleteArticle(options?: { [key: string]: any }) {
+  console.log(options, 'options');
+  return request<API.Response>('/api/article/delete', {
+    method: 'POST',
+    ...(options || {}),
+  });
+}
+
+/** 获取评论列表 GET /api/comment/list */
+export async function comment(
+  params: {
+    // query
+    /** 当前的页码 */
+    page?: number;
+    // /** 页面的容量 */
+    pageSize?: number;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.CommentList>('/api/comment/list', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 /** 获取规则列表 GET /api/rule */
 export async function rule(
   params: {

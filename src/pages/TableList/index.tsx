@@ -1,4 +1,4 @@
-import { addRule, article, removeRule, rule, updateRule } from '@/services/ant-design-pro/api';
+import { addRule, article, deleteArticle, updateRule } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
@@ -10,7 +10,7 @@ import {
   ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
-import { Button, Drawer, Input, message } from 'antd';
+import { Button, Drawer, Input, message, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'umi';
 import type { FormValueType } from './components/UpdateForm';
@@ -66,13 +66,17 @@ const handleUpdate = async (fields: FormValueType) => {
  *
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: API.RuleListItem[]) => {
+const handleRemove = async (selectedRows: API.ArticleItem[]) => {
+  const ids = selectedRows.map((e) => e.id);
+  console.log(ids.join(','));
+
   const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
+  // const res = await deleteArticle({id:ids.join(',')})
+
   try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
+    // await removeRule({
+    //   key: selectedRows.map((row) => row.key),
+    // });
     hide();
     message.success('Deleted successfully and will refresh soon');
     return true;
@@ -99,7 +103,9 @@ const TableList: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
+  const [selectedRowsState, setSelectedRows] = useState<API.ArticleItem[]>([]);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   /**
    * @en-US International configuration
@@ -261,9 +267,34 @@ const TableList: React.FC = () => {
       ],
     },
   ];
+  const handleOk = async () => {
+    setConfirmLoading(true);
+    const ids = selectedRowsState.map((e) => e.id);
+    const res = await deleteArticle({ data: { ids: ids.join(',') } });
+    console.log(res);
+    setOpen(false);
+    setConfirmLoading(false);
+    if (res.code === 200) {
+      actionRef.current?.reloadAndRest?.();
+      message.success('Deleted successfully！');
+    } else {
+      message.error('Adding failed, please try again!');
+    }
+  };
+
+  const handleCancel = () => {};
 
   return (
     <PageContainer>
+      <Modal
+        title="提示"
+        open={open}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+      >
+        <p>{'请再次确认是否确认要删除此内容。请确认并注意，此操作是不可逆的'}</p>
+      </Modal>
       <ProTable<API.ArticleItem, API.PageParams>
         headerTitle={intl.formatMessage({
           id: 'pages.articleList.pageTitle',
@@ -301,22 +332,23 @@ const TableList: React.FC = () => {
               <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
               <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
               &nbsp;&nbsp;
-              <span>
+              {/* 可以展示阅读量 */}
+              {/* <span>
                 <FormattedMessage
                   id="pages.searchTable.totalServiceCalls"
                   defaultMessage="Total number of service calls"
                 />{' '}
                 {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
                 <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
-              </span>
+              </span> */}
             </div>
           }
         >
           <Button
             onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
+              setOpen(true);
+              // await handleRemove(selectedRowsState);
+              // setSelectedRows([]);
             }}
           >
             <FormattedMessage
