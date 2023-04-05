@@ -78,6 +78,12 @@ declare namespace API {
     success?: boolean;
   };
 
+  type CommentList = {
+    data?: ArticleItem[];
+    total?: number;
+    success?: boolean;
+  };
+
   type FakeCaptcha = {
     code?: number;
     status?: string;
