@@ -60,10 +60,25 @@ export async function article(
   });
 }
 
-/** 新增文章 POST /api/article/add */
+/** 新增文章 POST  */
 export async function addArticle(options?: { [key: string]: any }) {
-  console.log(options, 'options');
   return request<API.Response>('/api/article/add', {
+    method: 'POST',
+    ...(options || {}),
+  });
+}
+
+/** 获取文章 POST  */
+export async function getArticleById(options?: { [key: string]: any }) {
+  return request<API.Response>('/api/article/detail', {
+    method: 'POST',
+    ...(options || {}),
+  });
+}
+
+/** 获取文章 POST  */
+export async function updateArticle(options?: { [key: string]: any }) {
+  return request<API.Response>('/api/app/update', {
     method: 'POST',
     ...(options || {}),
   });
@@ -71,7 +86,6 @@ export async function addArticle(options?: { [key: string]: any }) {
 
 /** 删除文章 POST /api/article/delete */
 export async function deleteArticle(options?: { [key: string]: any }) {
-  console.log(options, 'options');
   return request<API.Response>('/api/article/delete', {
     method: 'POST',
     ...(options || {}),
