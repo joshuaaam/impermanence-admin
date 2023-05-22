@@ -15,6 +15,7 @@ import React, { useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'umi';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
+import { history } from 'umi';
 
 /**
  * @en-US Add node
@@ -252,8 +253,7 @@ const TableList: React.FC = () => {
         <a
           key="config"
           onClick={() => {
-            handleUpdateModalVisible(true);
-            setCurrentRow(record);
+            history.push('/article/?id=' + record?.id);
           }}
         >
           <FormattedMessage id="pages.articleList.edit" defaultMessage="Configuration" />
