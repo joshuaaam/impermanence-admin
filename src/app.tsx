@@ -7,6 +7,7 @@ import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import status from '../config/responeStatus.js';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -35,16 +36,16 @@ export async function getInitialState(): Promise<{
     return undefined;
   };
   // 如果不是登录页面，执行
-  // if (history.location.pathname !== loginPath) {
-  //   const currentUser = await fetchUserInfo();
-  //   return {
-  //     fetchUserInfo,
-  //     currentUser,
-  //     settings: defaultSettings,
-  //   };
-  // }
+  if (history.location.pathname !== loginPath) {
+    const currentUser = await fetchUserInfo();
+    return {
+      fetchUserInfo,
+      currentUser,
+      settings: defaultSettings,
+    };
+  }
   return {
-    // fetchUserInfo,
+    fetchUserInfo,
     settings: defaultSettings,
   };
 }
@@ -61,9 +62,17 @@ const authHeaderInterceptor = (url: string, options: RequestConfig) => {
     options: { ...options, interceptors: true, headers: authHeader },
   };
 };
+// 响应拦截
+const responseInterceptor = (response: any, options: any) => {
+  if (response.status === status.SC_UNAUTHORIZED) {
+    history.push('/user/login');
+  }
+  return response;
+};
 export const request: RequestConfig = {
   // 新增自动添加AccessToken的请求前拦截器
   requestInterceptors: [authHeaderInterceptor],
+  responseInterceptors: [responseInterceptor],
 };
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout

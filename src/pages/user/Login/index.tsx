@@ -61,7 +61,7 @@ const Login: React.FC = () => {
           defaultMessage: '登录成功！',
         });
         message.success(defaultLoginSuccessMessage);
-        // localStorage.setItem('Authorization', msg?.token || '');
+        localStorage.setItem('Authorization', msg?.token || '');
         // await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
         history.push('/');
