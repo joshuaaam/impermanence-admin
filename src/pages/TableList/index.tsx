@@ -310,13 +310,25 @@ const TableList: React.FC = () => {
             type="primary"
             key="primary"
             onClick={() => {
-              handleModalVisible(true);
+              // handleModalVisible(true);
+              history.push('/article');
             }}
           >
             <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
-        request={article}
+        request={async (
+          params: any & {
+            pageSize: number;
+            current: number;
+          },
+        ) => {
+          const data = await article({
+            page: params.current,
+            pageSize: params.pageSize,
+          });
+          return data;
+        }}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
